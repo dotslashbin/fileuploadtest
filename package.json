@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/dotslashbin/fileuploadtest#readme",
   "dependencies": {
+    "bootstrap": "^4.1.3",
     "express": "^4.16.4"
   }
 }
