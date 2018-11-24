@@ -1,11 +1,12 @@
 //	Includes
 // const bootstrap = require('bootstrap'); 
-const express 	= require('express'); 
-const app 		= express(); 
-const port 		= 8080; 
-const router 	= express.Router(); 
-const fetch 	= require('node-fetch'); 
-const hbs 		= require('hbs')
+const express	 	= require('express'); 
+const app 			= express(); 
+const port 			= process.env.PORT || 8080; 
+const router 		= express.Router(); 
+const fetch 		= require('node-fetch'); 
+const hbs 			= require('hbs'); 
+const formidable 	= require('formidable'); 
 
 var path 		= __dirname + '/views/'; 
 
@@ -30,6 +31,6 @@ router.post('/tests', (req, res) => {
 
 
 app.listen(port, () => {
-	console.log('listen to ' + port)
+	console.log(`listen to ${port}`)
 })
 
