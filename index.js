@@ -5,12 +5,18 @@ const app 		= express();
 const port 		= 8080; 
 const router 	= express.Router(); 
 const fetch 	= require('node-fetch'); 
+const hbs 		= require('hbs')
 
 var path 		= __dirname + '/views/'; 
 
 app.use(express.static(__dirname + "/public"));
 
-app.use('/', router); 
+app.use('/', (req, res) => {
+	res.render('index.hbs', {
+		title: "Joshua's Test Answer", 
+		somevar: "foo bar"
+	})
+}); 
 
 app.use('/tests', router); 
 
