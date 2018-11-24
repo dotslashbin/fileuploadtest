@@ -1,20 +1,29 @@
-const port 		= 3000; 
+//	Includes
+// const bootstrap = require('bootstrap'); 
 const express 	= require('express'); 
-var app 		= express(); 
+const app 		= express(); 
+const port 		= 8080; 
+const router 	= express.Router(); 
+const fetch 	= require('node-fetch'); 
 
-app.use(express.static(__dirname + '/public')); 
+var path 		= __dirname + '/views/'; 
 
-app.get('/', (req, res) => {
-	res.send({
-		name: "joshua", 
-		likes: ["crossfit", "food"]
-	}); 
+app.use(express.static(__dirname + "/public"));
+
+app.use('/', router); 
+
+app.use('/tests', router); 
+
+router.get('/', (req, res) => {
+	res.sendFile(path + 'index.html')
 })
 
-app.get('/about', (req, res) => {
-	res.send("About page")
+router.post('/tests', (req, res) => {
+	console.log(req.body)
 })
+
 
 app.listen(port, () => {
-	console.log("It is running on port " + port)
-})  
+	console.log('listen to ' + port)
+})
+
