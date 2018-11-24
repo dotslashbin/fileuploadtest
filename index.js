@@ -25,6 +25,10 @@ router.get('/', (req, res) => {
 	res.sendFile(path + 'index.html')
 })
 
+app.get('/about', (req, res) => {
+	res.send("About page")
+})
+
 router.post('/tests', (req, res) => {
 	console.log(req.body)
 })
