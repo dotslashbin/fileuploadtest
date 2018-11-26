@@ -1,40 +1,42 @@
-//	Includes
-// const bootstrap = require('bootstrap'); 
-const express	 	= require('express'); 
-const app 			= express(); 
-const port 			= process.env.PORT || 8080; 
-const router 		= express.Router(); 
-const fetch 		= require('node-fetch'); 
-const hbs 			= require('hbs'); 
-const formidable 	= require('formidable'); 
+const express 	= require('express')
+const hbs 		= require('hbs')
 
-var path 		= __dirname + '/views/'; 
+const formidable = require('formidable')
+const http = require('http')
+const util = require('util')
 
-app.use(express.static(__dirname + "/public"));
 
-app.use('/', (req, res) => {
-	res.render('index.hbs', {
-		title: "Joshua's Test Answer", 
-		somevar: "foo bar"
-	})
-}); 
+const app 		= express()
+const port 		= 3000
 
-app.use('/tests', router); 
 
-router.get('/', (req, res) => {
-	res.sendFile(path + 'index.html')
+app.set('view engine', 'hbs')
+
+app.use(express.static(__dirname + '/public'))
+
+app.get('/', (req, res) => {
+	res.render('index.hbs', { title: "jambawamba", foo:"bar"})
 })
 
 app.get('/about', (req, res) => {
-	res.send("About page")
+	res.render('about.hbs', { title: "jambawamba", foo:"bar"})
 })
 
-router.post('/tests', (req, res) => {
-	console.log(req.body)
-})
+app.post('/upload', (req, res) => {
+	if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
+	    // parse a file upload
+	    var form = new formidable.IncomingForm();
 
+	    form.parse(req, function(err, fields, files) {
+	      res.writeHead(200, {'content-type': 'text/plain'});
+	      res.write('received upload:\n\n');
+	      res.end(util.inspect({fields: fields, files: files}));
+	    });
+
+	    return;
+	  }
+})
 
 app.listen(port, () => {
-	console.log(`listen to ${port}`)
+	console.log("RUNNING ON PORT: " + port)
 })
-
