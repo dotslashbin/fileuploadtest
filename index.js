@@ -16,13 +16,29 @@ const uploadFolder 	= __dirname + '/uploads/'
 
 app.set('view engine', 'hbs')
 
+var renderIndex = (listOfFiles) => {
+
+	console.log(listOfFiles); 
+
+
+
+	// res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: "<ol>" + files + "</ol>" })
+}
+
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => {
 
-	var files = helper.getListOfFiles(uploadFolder)
+	// helper.loadListOfFiles(uploadFolder, renderIndex)
 
-	res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: "<ol>" + files + "</ol>" })
+	// console.log(files)
+
+	// res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: "<ol>" + files + "</ol>" })
+
+	helper.loadListOfFiles(uploadFolder, (files) => {
+		res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files })
+		
+	})
 })
 
 app.get('/about', (req, res) => {

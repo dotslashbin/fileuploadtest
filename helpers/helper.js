@@ -1,21 +1,47 @@
 const fs = require('fs'); 
 
-var getListOfFiles = (path) => {
+// function loadListOfFiles(path, renderCallback) {
+	
+// 	fs.readdir(path, (error, files) => {
+// 		if(error == null) {
 
-	return fs.readdir(path, (error, files) => {
+// 			var container = []; 
+
+// 			files.forEach( file => {
+
+// 				if(file != '.DS_Store' )
+// 				{
+// 					// fileList += '<li>' + file + '</li>'
+
+// 					container.push(file)
+// 				}
+// 			})
+
+// 		} 
+
+// 		renderCallback(container)
+// 	});
+
+// 	return null
+// }
+
+var loadListOfFiles = (path, callback) => {
+	fs.readdir(path, (error, files) => {
 		if(error == null) {
-			var fileList = ""; 
+			var container = []; 
 			files.forEach( file => {
-				if(file != '.DS_Store' )
+
+				if(file != '.DS_Store')
 				{
-					fileList += '<li>' + file + '</li>'
+					container.push(file)
 				}
 			})
-
 		} 
+
+		callback(container)
 	});
 }
 
 module.exports = {
-	getListOfFiles
+	loadListOfFiles
 }
