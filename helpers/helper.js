@@ -1,0 +1,1 @@
+module.exports.testing = () => { console.log("hello world") }
