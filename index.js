@@ -34,34 +34,31 @@ app.post('/', (req, res) => {
 
 		form.parse(req)
 
-		/**
-		 * Sample checking on parsed form data
-		 */
-		// form.parse(req, (error, fields, files) => {
-		// 	if(error == null && files.sampleFile.size > 0)
-		// 	{
-		// 	}
-		// })
-
-
-		// form.on('fileBegin', (name, file) => {
-		// 	if(file) {
-		// 		file.path = __dirname + '/uploads/' + file.name;	
-		// 	}
-			
-		// })
-
 		form.on('file', (name, file) => {
 			if(file.size > 0)
 			{
-				// form.on('fileBegin', (name, file) => {
-				// 	if(file) {
-				// 		file.path = __dirname + '/uploads/' + file.name;	
-				// 	}
-				// })
-				// console.log("there is a file --> " + os.tmpdir())
-				fs.rename(file.path, __dirname + '/uploads/' + file.name)
-				res.send("done")
+
+				var uploadFolder =  __dirname + '/uploads/' 
+				
+				fs.rename(file.path, uploadFolder + file.name)
+
+				fs.readdir(uploadFolder, (error, files) => {
+					if(error == null) {
+						var fileList = ""; 
+						files.forEach( file => {
+							if(file != '.DS_Store' )
+							{
+								fileList += '<li>' + file + '</li>'
+							}
+							
+						})
+
+						res.render('index.hbs', { title: "jambawamba", files_container:"<ol>" + fileList + "</ol>" })
+					} else {
+						res.render('index.hbs', { title: "jambawamba"})
+					}
+				});
+				
 			} else {
 				res.render('index.hbs', { title: "jambawamba", foo:"foobar", 'errorMessage':"No files uploaded..." })
 			}
@@ -76,9 +73,3 @@ app.post('/', (req, res) => {
 app.listen(port, () => {
 	console.log("RUNNING ON PORT: " + port)
 })
-
-/**
- * Notes
-	// res.redirect('/about') -- redirecting
-
- */
