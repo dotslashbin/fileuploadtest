@@ -52,6 +52,11 @@
                   <input type="text" class="form-control" placeholder="Example input" name="file_to_delete">
                 </fieldset>
                 <input type="submit" value="delete" class="btn btn-primary" />
+                {{#if message}}
+                <div>
+                  <span style="font-weight: bold; color: red">{{message}}</span>
+                </div>
+                {{/if}}
               </form>
               
             </div>

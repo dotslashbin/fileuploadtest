@@ -71,20 +71,54 @@ app.post('/', (req, res) => {
 
 })
 
+// ORIGINAL WORKING VERSION BEFORE PROMISES
+/** 
+ * app.post('/delete', (req, res) => {
+	var form = new formidable.IncomingForm();
+
+	form.parse(req, (error, fields, files) => {
+		if(error == null) {
+
+			var fileName = fields.file_to_delete
+
+			try {
+				fs.unlink(uploadFolder + fileName, () => {
+					console.log("File deleted...")
+				});
+
+				helper.loadListOfFiles(uploadFolder, (files) => {
+					res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files })
+				})
+			} catch(error) {
+
+			}
+		}
+	})
+})
+ */
+
 app.post('/delete', (req, res) => {
 	var form = new formidable.IncomingForm();
 
 	form.parse(req, (error, fields, files) => {
 		if(error == null) {
+
 			var fileName = fields.file_to_delete
 
-			fs.unlink(uploadFolder + fileName, () => {
-				console.log("File deleted...")
-			});
+			helper.fileDeleteThing(uploadFolder+fileName).then(
+				(message) => {
+					helper.loadListOfFiles(uploadFolder, (files) => {
+						res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files, message:message })
+					})
+				}, 
+				(errorMessage) => {
+					console.log("FAILED: " + errorMessage)
+					helper.loadListOfFiles(uploadFolder, (files) => {
+						res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files, message:errorMessage })
+					})
+				}, 
+			)
 
-			helper.loadListOfFiles(uploadFolder, (files) => {
-				res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files })
-			})
 		}
 	})
 })
