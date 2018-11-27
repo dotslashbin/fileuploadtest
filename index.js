@@ -16,15 +16,6 @@ const uploadFolder 	= __dirname + '/uploads/'
 
 app.set('view engine', 'hbs')
 
-var renderIndex = (listOfFiles) => {
-
-	console.log(listOfFiles); 
-
-
-
-	// res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: "<ol>" + files + "</ol>" })
-}
-
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => {
@@ -37,7 +28,6 @@ app.get('/', (req, res) => {
 
 	helper.loadListOfFiles(uploadFolder, (files) => {
 		res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files })
-		
 	})
 })
 
@@ -63,16 +53,10 @@ app.post('/', (req, res) => {
 
 				fs.readdir(uploadFolder, (error, files) => {
 					if(error == null) {
-						var fileList = ""; 
-						files.forEach( file => {
-							if(file != '.DS_Store' )
-							{
-								fileList += '<li>' + file + '</li>'
-							}
-							
-						})
 
-						res.render('index.hbs', { title: "jambawamba", files_container:"<ol>" + fileList + "</ol>" })
+						helper.loadListOfFiles(uploadFolder, (files) => {
+							res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files })
+						})
 					} else {
 						res.render('index.hbs', { title: "jambawamba"})
 					}
@@ -97,10 +81,11 @@ app.post('/delete', (req, res) => {
 			fs.unlink(uploadFolder + fileName, () => {
 				console.log("File deleted...")
 			});
+
+			helper.loadListOfFiles(uploadFolder, (files) => {
+				res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: files })
+			})
 		}
-
-		res.render('index.hbs', { title: "jambawamba", foo:"foobar", 'errorMessage':"no files to delete" })
-
 	})
 })
 

@@ -33,7 +33,7 @@ var loadListOfFiles = (path, callback) => {
 
 				if(file != '.DS_Store')
 				{
-					container.push(file)
+					container.push({ filename: file})
 				}
 			})
 		} 

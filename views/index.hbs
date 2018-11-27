@@ -62,7 +62,11 @@
 
     {{#if files_container}}
     <div class="container">
-      <p>{{{ files_container }}}</p>
+      <ol>
+      {{#each files_container as |file|}}
+        <li>{{file.filename}}</li>
+      {{/each}}
+      </ol>
     </div>
     {{/if}}
     
