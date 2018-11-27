@@ -1,5 +1,5 @@
-const express 	= require('express')
-const hbs 		= require('hbs')
+const express 		= require('express')
+const hbs 			= require('hbs')
 
 const formidable 	= require('formidable')
 const http 			= require('http')
@@ -12,12 +12,17 @@ const port 			= 3000
 
 const helper 		= require('./helpers/helper.js')
 
+const uploadFolder 	= __dirname + '/uploads/'
+
 app.set('view engine', 'hbs')
 
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => {
-	res.render('index.hbs', { title: "jambawamba", foo:"foobar" })
+
+	var files = helper.getListOfFiles(uploadFolder)
+
+	res.render('index.hbs', { title: "jambawamba", foo:"foobar", files_container: "<ol>" + files + "</ol>" })
 })
 
 app.get('/about', (req, res) => {
@@ -30,7 +35,7 @@ app.post('/', (req, res) => {
 
 		var form = new formidable.IncomingForm();
 
-		form.uploadDir = __dirname + '/uploads/'
+		form.uploadDir = uploadFolder
 
 		form.parse(req)
 
@@ -38,8 +43,6 @@ app.post('/', (req, res) => {
 			if(file.size > 0)
 			{
 
-				var uploadFolder =  __dirname + '/uploads/' 
-				
 				fs.rename(file.path, uploadFolder + file.name)
 
 				fs.readdir(uploadFolder, (error, files) => {
@@ -62,12 +65,27 @@ app.post('/', (req, res) => {
 			} else {
 				res.render('index.hbs', { title: "jambawamba", foo:"foobar", 'errorMessage':"No files uploaded..." })
 			}
-
-
 		})
 
 	}
 
+})
+
+app.post('/delete', (req, res) => {
+	var form = new formidable.IncomingForm();
+
+	form.parse(req, (error, fields, files) => {
+		if(error == null) {
+			var fileName = fields.file_to_delete
+
+			fs.unlink(uploadFolder + fileName, () => {
+				console.log("File deleted...")
+			});
+		}
+
+		res.render('index.hbs', { title: "jambawamba", foo:"foobar", 'errorMessage':"no files to delete" })
+
+	})
 })
 
 app.listen(port, () => {

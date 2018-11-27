@@ -18,12 +18,11 @@
               {{ somevar }}
             </div>
             <div class="card-block" style="padding: 20px;">
-              <h4 class="card-title">File Upload {{ foo }}</h4>
+              <h4 class="card-title">File Upload Demo sample word: {{ foo }}</h4>
               <p class="card-text"> just something something </p>
               <form action="/" method="post" enctype="multipart/form-data">
                 <label class="file">
                   <input type="file" id="file" name="sampleFile">
-                
                   <input class="btn btn-primary" type="submit" value="submit">
                 </label>
               </form>
@@ -31,16 +30,38 @@
           </div>
         </div>
       </div>
-      <ol>
-        <li>{{ uploadedFile }}</li>
-      </ol>
-    </div>
     <div>
-      <h2>{{ errorMessage}}</h2>
+      <h3 style="color: red;">{{ errorMessage}}</h3>
+    </div>
+    </div>
+    
+    
+    <div class="container">
+      <div class="row" style="width: 50%;">
+        <div class="col-1-12|auto">
+          <div class="card">
+            <div class="card-header">
+              {{ somevar }}
+            </div>
+            <div class="card-block" style="padding: 20px;">
+              <h4 class="card-title">File Delete Demo</h4>
+              <p class="card-text"> Type the filename of what you wish to delete </p>
+              <form method="post" action="/delete">
+                <fieldset class="form-group">
+                  <label for="formGroupExampleInput">Example label</label>
+                  <input type="text" class="form-control" placeholder="Example input" name="file_to_delete">
+                </fieldset>
+                <input type="submit" value="delete" class="btn btn-primary" />
+              </form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     {{#if files_container}}
-    <div>
+    <div class="container">
       <p>{{{ files_container }}}</p>
     </div>
     {{/if}}
